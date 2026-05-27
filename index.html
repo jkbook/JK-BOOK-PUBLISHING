@@ -2485,17 +2485,76 @@
       }
     }
 
+    // Connects checkout submission directly to your Google Sheets Database URL
+    const DATABASE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwbCM1U65wFWKsKj73t29IRtI07ta7MirDqx9-UCtYzU3ObyiOqfQDIe86gZ730eZJj/exec";
+
     function submitPayment(e) {
       e.preventDefault();
 
-      document.getElementById('checkoutHeader').classList.add('hidden');
-      document.getElementById('checkoutProgress').classList.add('hidden');
-      document.getElementById('paymentForm').classList.add('hidden');
-      document.getElementById('successOverlay').classList.remove('hidden');
+      // 1. Gather Customer Data
+      const name = document.getElementById('ship-name').value;
+      const email = document.getElementById('ship-email').value;
+      const address = document.getElementById('ship-address').value;
+      const city = document.getElementById('ship-city').value;
+      const postal = document.getElementById('ship-postal').value;
+      
+      // Format clean address block
+      const fullAddress = `${address}, ${city} - ${postal} (Email: ${email})`;
+      
+      // Get phone from registration metadata or fallback prompt
+      const phone = registeredUser ? registeredUser.phone : "Not Specified";
 
-      startConfettiRain();
-      playPaymentSuccessSound();
-      speakThankYouLine();
+      // 2. Format cart items list
+      const orderedItems = cart.map(item => ({
+        title: item.title,
+        quantity: item.quantity
+      }));
+
+      // Calculate cart total
+      const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+      // Show a visual processing/loading state in the UI
+      const submitButton = e.target.querySelector('button[type="submit"]');
+      const originalButtonText = submitButton ? submitButton.innerText : "Confirm Order (COD)";
+      if (submitButton) {
+        submitButton.innerText = "Processing Order...";
+        submitButton.disabled = true;
+      }
+
+      // 3. Post to Google Sheet Database
+      fetch(DATABASE_WEB_APP_URL, {
+        method: "POST",
+        mode: "no-cors", // Crucial: avoids preflight redirect browser security blocks
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: name,
+          phone: phone,
+          address: fullAddress,
+          items: orderedItems,
+          total: cartTotal
+        })
+      })
+      .then(() => {
+        // Success handling
+        document.getElementById('checkoutHeader').classList.add('hidden');
+        document.getElementById('checkoutProgress').classList.add('hidden');
+        document.getElementById('paymentForm').classList.add('hidden');
+        document.getElementById('successOverlay').classList.remove('hidden');
+
+        startConfettiRain();
+        playPaymentSuccessSound();
+        speakThankYouLine();
+      })
+      .catch(error => {
+        console.error("Database connection failed:", error);
+        showCustomNotification("Network Timeout", "We encountered an issue logging your order automatically. Please try again.");
+        if (submitButton) {
+          submitButton.innerText = originalButtonText;
+          submitButton.disabled = false;
+        }
+      });
     }
 
     function completePurchaseAndReset() {
