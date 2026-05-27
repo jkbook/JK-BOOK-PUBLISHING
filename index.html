@@ -1,0 +1,1978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JK Publications | Knowledge • Inspire • Impact</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Georgia', 'ui-serif', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @keyframes scaleUp {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    @keyframes dash {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+    .animate-scale-up {
+      animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .animate-dash {
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      animation: dash 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    /* Premium book depth & lighting accents */
+    .book-container {
+      position: relative;
+      perspective: 1000px;
+    }
+    .book-spine-shine {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 12px;
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 20%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0) 100%);
+      pointer-events: none;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-800 flex flex-col font-sans antialiased selection:bg-sky-100 selection:text-sky-900">
+
+  <!-- Sky Blue Premium Top Accent Bar -->
+  <div class="h-1.5 w-full bg-sky-400"></div>
+
+  <!-- Header Navigation -->
+  <header class="sticky top-0 z-40 bg-white border-b border-sky-100 backdrop-blur-md bg-opacity-95 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo and Brand -->
+        <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('store')">
+          <div class="relative w-12 h-12 flex items-center justify-center rounded-full bg-sky-50 border border-sky-100 p-0.5 overflow-hidden">
+            <img 
+              id="headerLogo"
+              src="https://i.ibb.co/BVg64d1x/1000314843.png" 
+              alt="JK Publications Logo" 
+              class="w-full h-full object-contain rounded-full"
+              onerror="handleLogoError(this)"
+            />
+          </div>
+          <div>
+            <h1 class="text-lg font-serif font-bold tracking-widest text-slate-900 leading-tight">JK PUBLICATIONS</h1>
+            <p class="text-[9px] tracking-[0.2em] text-sky-500 uppercase font-medium">Knowledge • Inspire • Impact</p>
+          </div>
+        </div>
+
+        <!-- Desktop Navigation tabs -->
+        <nav class="hidden md:flex space-x-2 bg-slate-100 p-1.5 rounded-lg border border-sky-50">
+          <button 
+            id="tab-btn-store"
+            onclick="switchTab('store')"
+            class="flex items-center gap-2 px-4 py-2 text-xs tracking-wider font-semibold uppercase rounded-md transition-all bg-white text-sky-600 shadow-xs"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+            Book Store
+          </button>
+          
+          <button 
+            id="tab-btn-calculator"
+            onclick="switchTab('calculator')"
+            class="flex items-center gap-2 px-4 py-2 text-xs tracking-wider font-semibold uppercase rounded-md transition-all text-slate-500 hover:text-sky-500"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+            Book Price Calculator
+          </button>
+
+          <button 
+            id="tab-btn-account"
+            onclick="switchTab('account')"
+            class="flex items-center gap-2 px-4 py-2 text-xs tracking-wider font-semibold uppercase rounded-md transition-all text-slate-500 hover:text-sky-500"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+            Create Account
+          </button>
+        </nav>
+
+        <div class="flex items-center gap-4">
+          <!-- Wishlist Indicator -->
+          <button 
+            onclick="toggleWishlist(true)"
+            class="p-2 text-slate-500 hover:text-sky-500 hover:bg-sky-50 rounded-full relative transition-all"
+            title="Wishlist"
+          >
+            <svg id="wishlistIcon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+            <span id="wishlistBadge" class="hidden absolute -top-0.5 -right-0.5 w-4 h-4 bg-sky-500 text-white rounded-full text-[9px] font-bold flex items-center justify-center">0</span>
+          </button>
+
+          <!-- Shopping Basket Trigger -->
+          <button 
+            onclick="toggleCart(true)"
+            class="p-2 bg-sky-50 text-sky-700 hover:bg-sky-100 hover:text-sky-800 rounded-full relative flex items-center justify-center w-10 h-10 transition-all border border-sky-100"
+            title="Your Basket"
+          >
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+            <span id="cartBadge" class="hidden absolute -top-1 -right-1 w-5 h-5 bg-slate-900 text-white rounded-full text-[10px] font-bold flex items-center justify-center shadow-md">0</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Bar -->
+    <div class="md:hidden flex justify-around items-center py-3 bg-sky-50/50 border-t border-sky-100">
+      <button onclick="switchTab('store')" id="mobile-tab-store" class="flex flex-col items-center gap-1 text-[10px] font-bold uppercase text-sky-600">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+        Store
+      </button>
+      
+      <button onclick="switchTab('calculator')" id="mobile-tab-calculator" class="flex flex-col items-center gap-1 text-[10px] font-bold uppercase text-slate-400">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+        Calculator
+      </button>
+
+      <button onclick="switchTab('account')" id="mobile-tab-account" class="flex flex-col items-center gap-1 text-[10px] font-bold uppercase text-slate-400">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+        Account
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Body Layout -->
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    
+    <!-- ================= SECTION 1: BOOK STORE ================= -->
+    <div id="section-store" class="space-y-8">
+      
+      <!-- Promos/Hero panel -->
+      <div class="bg-white rounded-2xl p-8 border border-sky-100 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 shadow-xs">
+        <div class="max-w-xl text-center md:text-left">
+          <span class="text-xs tracking-widest text-sky-500 uppercase font-bold">Official Publications Desk</span>
+          <h2 class="text-2xl sm:text-3xl font-serif font-bold text-slate-900 mt-2 mb-3 leading-tight">
+            Empowerment, Mind-Cleansing & success guides.
+          </h2>
+          <p class="text-slate-500 text-xs leading-relaxed">
+            Welcome to the official desk of **Dr. Jitendra Kumar Patel**. Discover life-shaping guides designed to cultivate clear mindset, rise above early-life struggles, and unlock structural success.
+          </p>
+        </div>
+        <div class="flex gap-3">
+          <button 
+            onclick="switchTab('calculator')" 
+            class="px-4 py-2 bg-sky-50 text-sky-600 border border-sky-100 hover:bg-sky-100 rounded-md text-xs uppercase font-semibold tracking-wider transition-all"
+          >
+            Estimate Custom Cost
+          </button>
+        </div>
+      </div>
+
+      <!-- Catalog Title Bar -->
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-sky-100 pb-4">
+        <div>
+          <h3 class="font-serif font-bold text-lg text-slate-900">Dr. Jitendra Kumar Patel Official Catalog</h3>
+          <p class="text-[11px] text-slate-400">Explore complete front-and-back detailed flaps by tapping on each book.</p>
+        </div>
+
+        <!-- Search Bar Input -->
+        <div class="relative max-w-xs w-full">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <input
+            id="searchInput"
+            type="text"
+            oninput="handleSearch(this.value)"
+            placeholder="Search catalog..."
+            class="w-full pl-9 pr-4 py-2 text-xs bg-white border border-sky-100 rounded-md focus:outline-hidden focus:border-sky-400"
+          />
+        </div>
+      </div>
+
+      <!-- Grid display -->
+      <div id="booksGrid" class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <!-- Injected via JavaScript dynamically -->
+      </div>
+
+    </div>
+
+    <!-- ================= SECTION 2: BOOK PRICE CALCULATOR ================= -->
+    <div id="section-calculator" class="hidden max-w-4xl mx-auto bg-white rounded-2xl border border-sky-100 p-6 md:p-8 space-y-8 animate-fade-in">
+      <div class="border-b border-sky-50 pb-4">
+        <span class="text-[10px] font-bold tracking-widest text-sky-500 uppercase">Publishing Utilities</span>
+        <h2 class="text-2xl font-serif font-semibold text-slate-900 mt-1">JK Publications Estimator</h2>
+        <p class="text-xs text-slate-400 mt-1">
+          Simulate printing cost variables. Highly calibrated at a base rate of **₹0.88 per page** with an initial cover binder cost of **₹30.00**, so that a 500-page book maps perfectly to a baseline printing cost of **₹470.00**.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Form Controls -->
+        <div class="space-y-5">
+          
+          <!-- Trim Size Selection -->
+          <div>
+            <span class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-2">Trim format Dimensions</span>
+            <div class="grid grid-cols-3 gap-2" id="calc-trim-group">
+              <button onclick="updateCalcParam('trimSize', '5x8')" id="trim-5x8" class="trim-btn py-2.5 px-2 rounded-md border text-[11px] font-semibold text-center transition-all border-slate-100 bg-white hover:bg-slate-50">Pocket (5"x8")</button>
+              <button onclick="updateCalcParam('trimSize', '6x9')" id="trim-6x9" class="trim-btn py-2.5 px-2 rounded-md border text-[11px] font-semibold text-center transition-all border-sky-500 bg-sky-50 text-sky-700">US Trade (6"x9")</button>
+              <button onclick="updateCalcParam('trimSize', 'A4')" id="trim-A4" class="trim-btn py-2.5 px-2 rounded-md border text-[11px] font-semibold text-center transition-all border-slate-100 bg-white hover:bg-slate-50">A4 Standard</button>
+            </div>
+          </div>
+
+          <!-- Print Run Copies -->
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-2">
+              Copies Multiplier: <span id="copiesValDisplay" class="text-slate-900 font-mono text-xs font-semibold">500 copies</span>
+            </label>
+            <input 
+              type="range" 
+              min="100" 
+              max="10000" 
+              step="50"
+              value="500"
+              id="calcCopiesInput"
+              oninput="updateCalcSlider('copies', this.value)"
+              class="w-full accent-sky-500 cursor-ew-resize"
+            />
+            <div class="flex justify-between text-[9px] text-slate-400 font-semibold uppercase mt-1">
+              <span>Min: 100</span>
+              <span>Max: 10,000</span>
+            </div>
+          </div>
+
+          <!-- Page Count -->
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-2">
+              Estimated Page Volume: <span id="pagesValDisplay" class="text-slate-900 font-mono text-xs font-semibold">500 pages</span>
+            </label>
+            <input 
+              type="range" 
+              min="24" 
+              max="800" 
+              step="4"
+              value="500"
+              id="calcPagesInput"
+              oninput="updateCalcSlider('pages', this.value)"
+              class="w-full accent-sky-500 cursor-ew-resize"
+            />
+            <div class="flex justify-between text-[9px] text-slate-400 font-semibold uppercase mt-1">
+              <span>Min: 24</span>
+              <span>Max: 800 (Calibrated 500 = ₹470)</span>
+            </div>
+          </div>
+
+          <!-- Interior Ink Formulation -->
+          <div>
+            <span class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-2">Ink Formulation</span>
+            <div class="grid grid-cols-3 gap-2" id="calc-ink-group">
+              <button onclick="updateCalcParam('inkType', 'bw')" id="ink-bw" class="ink-btn py-2.5 px-2 rounded-md border text-[11px] font-semibold text-center transition-all border-sky-500 bg-sky-50 text-sky-700">B&W Matte</button>
+              <button onclick="updateCalcParam('inkType', 'standard_color')" id="ink-standard_color" class="ink-btn py-2.5 px-2 rounded-md border text-[11px] font-semibold text-center transition-all border-slate-100 bg-white hover:bg-slate-50">Standard Color</button>
+              <button onclick="updateCalcParam('inkType', 'premium_color')" id="ink-premium_color" class="ink-btn py-2.5 px-2 rounded-md border text-[11px] font-semibold text-center transition-all border-slate-100 bg-white hover:bg-slate-50">Premium Glossy</button>
+            </div>
+          </div>
+
+          <!-- Cover Binding finishes -->
+          <div>
+            <span class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-2">Binding Architecture</span>
+            <div class="grid grid-cols-3 gap-2" id="calc-cover-group">
+              <button onclick="updateCalcParam('coverType', 'paperback')" id="cover-paperback" class="cover-btn py-2.5 px-2 rounded-md border text-[11px] font-semibold text-center transition-all border-sky-500 bg-sky-50 text-sky-700">Softcover</button>
+              <button onclick="updateCalcParam('coverType', 'hardcover')" id="cover-hardcover" class="cover-btn py-2.5 px-2 rounded-md border text-[11px] font-semibold text-center transition-all border-slate-100 bg-white hover:bg-slate-50">Casebound Hard</button>
+              <button onclick="updateCalcParam('coverType', 'jacket')" id="cover-jacket" class="cover-btn py-2.5 px-2 rounded-md border text-[11px] font-semibold text-center transition-all border-slate-100 bg-white hover:bg-slate-50">Dust Jacket</button>
+            </div>
+          </div>
+
+          <!-- Paper Quality -->
+          <div>
+            <span class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-2">Paper Quality</span>
+            <div class="grid grid-cols-3 gap-2" id="calc-paper-group">
+              <button onclick="updateCalcParam('paperQuality', 'cream')" id="paper-cream" class="paper-btn py-2.5 px-2 rounded-md border text-[11px] font-semibold text-center transition-all border-sky-500 bg-sky-50 text-sky-700">Classic Cream</button>
+              <button onclick="updateCalcParam('paperQuality', 'white_matte')" id="paper-white_matte" class="paper-btn py-2.5 px-2 rounded-md border text-[11px] font-semibold text-center transition-all border-slate-100 bg-white hover:bg-slate-50">White Matte</button>
+              <button onclick="updateCalcParam('paperQuality', 'glossy')" id="paper-glossy" class="paper-btn py-2.5 px-2 rounded-md border text-[11px] font-semibold text-center transition-all border-slate-100 bg-white hover:bg-slate-50">Glossy Finish</button>
+            </div>
+          </div>
+
+          <!-- Delivery Priority -->
+          <div>
+            <span class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-2">Shipment Speed</span>
+            <div class="grid grid-cols-2 gap-2" id="calc-speed-group">
+              <button onclick="updateCalcParam('deliverySpeed', 'standard')" id="speed-standard" class="speed-btn py-2.5 px-2 rounded-md border text-[11px] font-semibold text-center transition-all border-sky-500 bg-sky-50 text-sky-700">Standard (Free)</button>
+              <button onclick="updateCalcParam('deliverySpeed', 'express')" id="speed-express" class="speed-btn py-2.5 px-2 rounded-md border text-[11px] font-semibold text-center transition-all border-slate-100 bg-white hover:bg-slate-50">Express Urgent (+₹500)</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Instant Output Ledger -->
+        <div class="bg-sky-50/50 rounded-xl p-6 border border-sky-100 flex flex-col justify-between h-fit sticky top-24 shadow-xs">
+          <div class="space-y-4">
+            <h3 class="font-serif font-bold text-base text-slate-900 border-b border-sky-100 pb-2">Estimated Print Ledger</h3>
+            
+            <div class="space-y-2 text-xs text-slate-600">
+              <div class="flex justify-between">
+                <span>Unit Cover Architecture</span>
+                <span id="ledgerCoverVal" class="font-mono text-slate-800">₹30.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Base Page Production</span>
+                <span id="ledgerPageVal" class="font-mono text-slate-800">₹440.00</span>
+              </div>
+              
+              <div class="border-t border-sky-100 my-2 pt-2 flex justify-between font-bold text-slate-700">
+                <span>Unit Print Cost (Per Book)</span>
+                <span id="ledgerUnitPriceVal" class="font-mono text-sky-700 font-bold">₹470.00</span>
+              </div>
+
+              <div class="flex justify-between">
+                <span>Suggested Retail Price (MSRP)</span>
+                <span id="ledgerRetailPrice" class="font-mono text-slate-700 font-semibold">₹752.00</span>
+              </div>
+
+              <div class="flex justify-between">
+                <span>Net Author Royalty (Per Sale)</span>
+                <span id="ledgerRoyalty" class="font-mono text-emerald-600 font-semibold">+₹282.00</span>
+              </div>
+
+              <div class="flex justify-between pt-2 border-t border-sky-100">
+                <span>Print Run Multiplier</span>
+                <span id="ledgerQuantityVal" class="font-mono text-slate-800">x500 copies</span>
+              </div>
+
+              <div class="flex justify-between">
+                <span>Shipping Base Charge</span>
+                <span id="ledgerShippingVal" class="font-mono text-slate-800">₹0.00</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-6 mt-6 border-t border-sky-100">
+            <div class="flex justify-between items-baseline mb-4">
+              <span class="text-[10px] uppercase tracking-wider font-bold text-slate-400">Total Print Run Estimate</span>
+              <span id="ledgerGrandTotal" class="text-2xl font-serif font-bold text-sky-700">₹2,35,000.00</span>
+            </div>
+
+            <div class="mb-4 bg-sky-100/50 p-3 rounded text-center border border-sky-200/50">
+              <span class="text-[10px] uppercase text-sky-800 font-bold block">Potential Project Royalty</span>
+              <span id="ledgerTotalRoyalty" class="text-sm font-bold font-serif text-sky-900">₹1,41,000.00</span>
+            </div>
+
+            <button 
+              onclick="lockQuotation()"
+              class="w-full py-3 bg-sky-500 text-white rounded-md text-xs font-semibold tracking-widest uppercase hover:bg-sky-600 transition-all shadow-xs"
+            >
+              Lock Print Parameters
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= SECTION 3: ACCOUNT CREATION ================= -->
+    <div id="section-account" class="hidden max-w-2xl mx-auto bg-white rounded-2xl border border-sky-100 p-6 md:p-8 animate-fade-in">
+      
+      <!-- Guest State -->
+      <div id="account-guest-view" class="space-y-6">
+        <div class="border-b border-sky-50 pb-4">
+          <span class="text-[10px] font-bold tracking-widest text-sky-500 uppercase">Interactive Setup</span>
+          <h2 class="text-2xl font-serif font-semibold text-slate-900 mt-1">Create JK Publications Account</h2>
+          <p class="text-xs text-slate-400 mt-1">
+            Sign up today to configure author permissions, track library purchases, and manage manuscript approvals.
+          </p>
+        </div>
+
+        <form id="registrationForm" onsubmit="handleRegister(event)" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Select Account Type</label>
+              <select 
+                id="reg-userType"
+                class="w-full text-xs p-3 bg-white border border-sky-100 rounded-md focus:outline-hidden focus:border-sky-400 font-semibold"
+              >
+                <option value="Reader">Reader / Library Account</option>
+                <option value="Author">Author / Publisher Desk</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Full Name</label>
+              <input 
+                type="text" required id="reg-fullName"
+                placeholder="John Doe"
+                class="w-full text-xs p-3 bg-white border border-sky-100 rounded-md focus:outline-hidden focus:border-sky-400"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Email Address</label>
+              <input 
+                type="email" required id="reg-email"
+                placeholder="johndoe@example.com"
+                class="w-full text-xs p-3 bg-white border border-sky-100 rounded-md focus:outline-hidden focus:border-sky-400"
+              />
+            </div>
+
+            <div>
+              <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Contact Phone</label>
+              <input 
+                type="tel" id="reg-phone"
+                placeholder="+91 98765 43210"
+                class="w-full text-xs p-3 bg-white border border-sky-100 rounded-md focus:outline-hidden focus:border-sky-400"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Handle Username (Optional)</label>
+              <input 
+                type="text" id="reg-username"
+                placeholder="johndoe_academic"
+                class="w-full text-xs p-3 bg-white border border-sky-100 rounded-md focus:outline-hidden focus:border-sky-400"
+              />
+            </div>
+
+            <div>
+              <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Secure Password</label>
+              <input 
+                type="password" required id="reg-password"
+                placeholder="••••••••••••"
+                class="w-full text-xs p-3 bg-white border border-sky-100 rounded-md focus:outline-hidden focus:border-sky-400"
+              />
+            </div>
+          </div>
+
+          <div class="pt-4">
+            <button 
+              type="submit"
+              class="w-full py-3 bg-sky-500 text-white rounded-md text-xs font-semibold tracking-widest uppercase hover:bg-sky-600 transition-all shadow-xs"
+            >
+              Complete Registration
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Logged In State -->
+      <div id="account-profile-view" class="hidden space-y-6">
+        <div class="border-b border-sky-100 pb-4 text-center">
+          <div id="profile-initial" class="w-16 h-16 bg-sky-500 text-white rounded-full mx-auto flex items-center justify-center font-serif text-2xl font-bold mb-3">
+            J
+          </div>
+          <h3 id="profile-name" class="font-serif font-bold text-xl text-slate-900">John Doe</h3>
+          <span id="profile-badge" class="inline-block mt-1 px-3 py-1 bg-sky-100 text-sky-700 text-[10px] tracking-wider uppercase font-bold rounded-full">
+            Active Reader Desk
+          </span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 text-xs text-slate-600 bg-sky-50/50 p-4 rounded-lg border border-sky-100/50">
+          <div>
+            <span class="text-[10px] uppercase font-bold text-slate-400 block">Username</span>
+            <p id="profile-username" class="font-semibold text-slate-800">@johndoe</p>
+          </div>
+          <div>
+            <span class="text-[10px] uppercase font-bold text-slate-400 block">Associated Email</span>
+            <p id="profile-email" class="font-semibold text-slate-800">johndoe@example.com</p>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Desk Operations</h4>
+          <div class="grid grid-cols-2 gap-3">
+            <button 
+              onclick="switchTab('calculator')" 
+              class="p-3 bg-white border border-sky-100 rounded-md text-left text-xs hover:border-sky-300 transition-all"
+            >
+              <span class="font-semibold text-slate-800 block">Author Publishing Space</span>
+              <span class="text-[10px] text-slate-400 block mt-0.5">Submit new manuscript drafts</span>
+            </button>
+            <button 
+              onclick="showCustomNotification('Manuscripts Notification', 'No active manuscript drafts detected.')" 
+              class="p-3 bg-white border border-sky-100 rounded-md text-left text-xs hover:border-sky-300 transition-all"
+            >
+              <span class="font-semibold text-slate-800 block">Manuscripts</span>
+              <span class="text-[10px] text-slate-400 block mt-0.5">Track your submitted peer reviews</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-sky-50 flex justify-between">
+          <button 
+            onclick="switchTab('store')"
+            class="px-5 py-2.5 bg-sky-500 text-white rounded-md text-xs font-semibold tracking-wider uppercase hover:bg-sky-600 transition-all"
+          >
+            Browse Bookstore
+          </button>
+          <button 
+            onclick="handleLogout()"
+            class="px-5 py-2.5 border border-red-200 text-red-600 rounded-md text-xs font-semibold tracking-wider uppercase hover:bg-red-50 transition-all"
+          >
+            Logout Desk
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Slide-out Wishlist Drawer -->
+  <div 
+    id="wishlistDrawer"
+    class="fixed inset-0 z-50 overflow-hidden pointer-events-none transition-all duration-500" 
+    role="dialog" 
+    aria-modal="true"
+  >
+    <div class="absolute inset-0 overflow-hidden">
+      <!-- Backdrop Overlay -->
+      <div 
+        id="wishlistBackdrop"
+        onclick="toggleWishlist(false)"
+        class="absolute inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity duration-500 ease-out opacity-0 pointer-events-none"
+      ></div>
+
+      <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+        <div 
+          id="wishlistPanel"
+          class="pointer-events-auto w-screen max-w-md transform translate-x-full transition-transform duration-500 ease-out"
+        >
+          <div class="flex h-full flex-col bg-white shadow-2xl border-l border-sky-100">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-6 py-5 bg-sky-50 border-b border-sky-100">
+              <div class="flex items-center gap-2">
+                <svg class="text-sky-600 w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                <h2 class="text-sm font-serif font-bold uppercase tracking-widest text-slate-900">Your Wishlist</h2>
+              </div>
+              <button 
+                onclick="toggleWishlist(false)"
+                class="rounded-full p-1 text-slate-400 hover:text-slate-600 hover:bg-sky-100 transition-all"
+              >
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- List Area -->
+            <div id="wishlistScrollArea" class="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+              <!-- Injected dynamically -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide-out Shopping Basket Drawer with custom fluid transitions -->
+  <div 
+    id="cartDrawer"
+    class="fixed inset-0 z-50 overflow-hidden pointer-events-none transition-all duration-500" 
+    role="dialog" 
+    aria-modal="true"
+  >
+    <div class="absolute inset-0 overflow-hidden">
+      <!-- Backdrop Overlay -->
+      <div 
+        id="cartBackdrop"
+        onclick="toggleCart(false)"
+        class="absolute inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity duration-500 ease-out opacity-0 pointer-events-none"
+      ></div>
+
+      <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+        <!-- Drawer panel -->
+        <div 
+          id="cartPanel"
+          class="pointer-events-auto w-screen max-w-md transform translate-x-full transition-transform duration-500 ease-out"
+        >
+          <div class="flex h-full flex-col bg-white shadow-2xl border-l border-sky-100">
+            
+            <!-- Cart Header -->
+            <div class="flex items-center justify-between px-6 py-5 bg-sky-50 border-b border-sky-100">
+              <div class="flex items-center gap-2">
+                <svg class="text-sky-600 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <h2 class="text-sm font-serif font-bold uppercase tracking-widest text-slate-900">Your Basket</h2>
+              </div>
+              <button 
+                onclick="toggleCart(false)"
+                class="rounded-full p-1 text-slate-400 hover:text-slate-600 hover:bg-sky-100 transition-all"
+              >
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Cart Scroll Area -->
+            <div id="cartScrollArea" class="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+              <!-- Dynamically injected cart items or empty illustration state -->
+            </div>
+
+            <!-- Cart Footer Summary -->
+            <div id="cartFooter" class="hidden bg-sky-50 px-6 py-6 border-t border-sky-100">
+              <div class="space-y-2 mb-6 text-xs text-slate-500">
+                <div class="flex justify-between">
+                  <span>Subtotal</span>
+                  <span class="font-mono font-semibold" id="cartSubtotalVal">₹0.00</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Standard Shipping</span>
+                  <span class="text-sky-600 font-medium">Free</span>
+                </div>
+                <div class="flex justify-between border-t border-sky-100 pt-3 text-sm font-semibold text-slate-900">
+                  <span>Estimated total</span>
+                  <span class="font-mono text-sky-700" id="cartTotalVal">₹0.00</span>
+                </div>
+              </div>
+              
+              <button 
+                onclick="startCheckout()"
+                class="w-full bg-sky-500 text-white text-center py-3 rounded-md text-xs font-semibold tracking-widest uppercase hover:bg-sky-600 transition-all shadow-xs"
+              >
+                Secure Checkout
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Book Detailed Quick View Modal -->
+  <div id="bookModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div onclick="closeBookModal()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"></div>
+    
+    <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl border border-sky-100 flex flex-col md:flex-row">
+      <button 
+        onclick="closeBookModal()"
+        class="absolute top-4 right-4 p-1.5 rounded-full bg-slate-50 border border-sky-100 text-slate-400 hover:text-slate-600 transition-all z-20"
+      >
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <!-- Left Cover Side (Front & Optional Back Flap side-by-side) -->
+      <div class="md:w-1/2 bg-sky-50/50 p-6 flex flex-col items-center justify-center border-r border-sky-100 gap-4" id="modalLeft">
+        <!-- Injected Cover Layout -->
+      </div>
+
+      <!-- Right Details Side -->
+      <div class="md:w-1/2 p-8 flex flex-col justify-between" id="modalRight">
+        <!-- Injected details -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Notification Dialog Modal -->
+  <div id="customNotificationModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
+    <div onclick="closeCustomNotification()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"></div>
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 relative z-10 shadow-2xl border border-sky-100 animate-scale-up text-center">
+      <div class="w-12 h-12 bg-sky-50 border border-sky-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-6 h-6 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <h3 id="notificationTitle" class="font-serif font-bold text-lg text-slate-900">Desk Update</h3>
+      <p id="notificationText" class="text-xs text-slate-500 mt-2 leading-relaxed whitespace-pre-line"></p>
+      <div class="mt-6">
+        <button 
+          onclick="closeCustomNotification()"
+          class="px-6 py-2 bg-sky-500 hover:bg-sky-600 text-white text-xs font-semibold uppercase tracking-wider rounded-md shadow-xs transition-all"
+        >
+          Acknowledge
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Dialog Modal -->
+  <div id="checkoutModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div id="checkoutOverlay" onclick="closeCheckout()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs"></div>
+    
+    <div class="bg-white rounded-2xl max-w-lg w-full relative z-10 shadow-2xl border border-sky-100 overflow-hidden">
+      
+      <!-- Checkout Header -->
+      <div id="checkoutHeader" class="bg-sky-50 px-6 py-5 border-b border-sky-100 flex items-center justify-between">
+        <h3 class="text-sm font-serif font-bold tracking-widest uppercase text-slate-900">Secure Checkout Gate</h3>
+        <button onclick="closeCheckout()" class="text-slate-400 hover:text-slate-600">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Stepper Progress Bar -->
+      <div id="checkoutProgress" class="px-6 py-4 bg-sky-50/50 border-b border-sky-100 flex items-center justify-between text-[9px] tracking-wider uppercase text-slate-400 font-bold">
+        <span id="step1-label" class="text-sky-600">1. Shipping</span>
+        <span>&gt;</span>
+        <span id="step2-label">2. Payment Method</span>
+        <span>&gt;</span>
+        <span id="step3-label">3. Success</span>
+      </div>
+
+      <!-- Step 1: Shipping Address Form -->
+      <form id="shippingForm" onsubmit="submitShipping(event)" class="p-6 space-y-4">
+        <div>
+          <label class="block text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">Full Name</label>
+          <input 
+            type="text" required id="ship-name"
+            placeholder="John Doe"
+            class="w-full text-xs p-3 bg-white border border-sky-100 rounded-md focus:outline-hidden focus:border-sky-400"
+          />
+        </div>
+        <div>
+          <label class="block text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">Email Address</label>
+          <input 
+            type="email" required id="ship-email"
+            placeholder="johndoe@example.com"
+            class="w-full text-xs p-3 bg-white border border-sky-100 rounded-md focus:outline-hidden focus:border-sky-400"
+          />
+        </div>
+        <div>
+          <label class="block text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">Shipping Address</label>
+          <input 
+            type="text" required id="ship-address"
+            placeholder="123 Academic Way"
+            class="w-full text-xs p-3 bg-white border border-sky-100 rounded-md focus:outline-hidden focus:border-sky-400"
+          />
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">City</label>
+            <input 
+              type="text" required id="ship-city"
+              placeholder="Mumbai"
+              class="w-full text-xs p-3 bg-white border border-sky-100 rounded-md focus:outline-hidden focus:border-sky-400"
+            />
+          </div>
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">Postal Code</label>
+            <input 
+              type="text" required id="ship-postal"
+              placeholder="400001"
+              class="w-full text-xs p-3 bg-white border border-sky-100 rounded-md focus:outline-hidden focus:border-sky-400"
+            />
+          </div>
+        </div>
+
+        <div class="pt-4">
+          <button 
+            type="submit" 
+            class="w-full py-3 bg-sky-500 text-white rounded-md text-xs font-semibold tracking-wider uppercase hover:bg-sky-600 transition-all"
+          >
+            Continue to Payment Methods
+          </button>
+        </div>
+      </form>
+
+      <!-- Step 2: Payment Selector -->
+      <form id="paymentForm" onsubmit="submitPayment(event)" class="hidden p-6 space-y-4">
+        <div class="bg-sky-50/50 p-4 rounded-lg border border-sky-100 mb-2 text-xs">
+          <span class="text-[10px] text-slate-400 block font-light">Delivery Target</span>
+          <p id="summary-name" class="font-semibold text-slate-800"></p>
+          <p id="summary-address" class="text-slate-500 mt-0.5"></p>
+        </div>
+
+        <div class="space-y-3">
+          <label class="block text-[10px] uppercase tracking-wider font-bold text-slate-400">Select Payment Gateway</label>
+          
+          <!-- Cash on Delivery (COD) -->
+          <label class="flex items-start gap-3 p-4 bg-sky-50 border-2 border-sky-500 rounded-lg cursor-pointer transition-all">
+            <input 
+              type="radio" 
+              name="payment_opt" 
+              value="cod" 
+              checked
+              class="mt-1 accent-sky-600"
+            />
+            <div>
+              <span class="text-xs font-bold text-slate-900 block">Cash on Delivery (COD)</span>
+              <p class="text-[10px] text-slate-500 mt-0.5 leading-relaxed">
+                Pay with physical cash upon receiving package at your doorstep. Standard package validation is free.
+              </p>
+            </div>
+          </label>
+
+          <!-- Credit / Debit Card -->
+          <div class="flex items-start gap-3 p-4 bg-slate-50 border border-slate-200 rounded-lg opacity-60 relative cursor-not-allowed">
+            <input 
+              type="radio" 
+              name="payment_opt" 
+              disabled 
+              class="mt-1 accent-slate-400"
+            />
+            <div class="flex-1">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-slate-400 block">Credit / Debit Card</span>
+                <span class="text-[8px] bg-slate-200 text-slate-600 px-2 py-0.5 font-bold tracking-widest uppercase rounded-sm">Coming Soon</span>
+              </div>
+              <p class="text-[10px] text-slate-400 mt-0.5">Secure payment via instant Visa, Mastercard, or RuPay channels.</p>
+            </div>
+          </div>
+
+          <!-- UPI / Net Banking -->
+          <div class="flex items-start gap-3 p-4 bg-slate-50 border border-slate-200 rounded-lg opacity-60 relative cursor-not-allowed">
+            <input 
+              type="radio" 
+              name="payment_opt" 
+              disabled 
+              class="mt-1 accent-slate-400"
+            />
+            <div class="flex-1">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-slate-400 block">Instant UPI & Netbanking</span>
+                <span class="text-[8px] bg-slate-200 text-slate-600 px-2 py-0.5 font-bold tracking-widest uppercase rounded-sm">Coming Soon</span>
+              </div>
+              <p class="text-[10px] text-slate-400 mt-0.5">Direct integration through banking mobile applications and scanning keys.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 flex gap-3">
+          <button 
+            type="button" onclick="checkoutStepBack(1)"
+            class="w-1/3 py-3 border border-sky-200 text-sky-600 rounded-md text-xs font-semibold uppercase hover:bg-sky-50 transition-all"
+          >
+            Back
+          </button>
+          <button 
+            type="submit" 
+            class="w-2/3 py-3 bg-sky-500 hover:bg-sky-600 text-white rounded-md text-xs font-bold tracking-wider uppercase transition-all shadow-md"
+          >
+            Confirm Order (COD)
+          </button>
+        </div>
+      </form>
+
+      <!-- Step 3: Immersive Fullscreen Success Overlay -->
+      <div id="successOverlay" class="hidden relative min-h-[85vh] md:min-h-[500px] w-full bg-sky-600 text-white flex flex-col justify-between p-8 text-center overflow-hidden animate-fade-in z-50">
+        <!-- Confetti Canvas -->
+        <canvas id="confettiCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-10"></canvas>
+
+        <div class="my-auto space-y-6 z-20 relative">
+          <!-- Circular embedded logo overlay inside success frame -->
+          <div class="w-20 h-20 rounded-full bg-white p-1 mx-auto shadow-md flex items-center justify-center overflow-hidden">
+            <img 
+              src="https://i.ibb.co/BVg64d1x/1000314843.png" 
+              alt="Logo" 
+              class="w-full h-full object-contain rounded-full" 
+              onerror="handleLogoError(this)"
+            />
+          </div>
+
+          <!-- Glowing white circle with tick animation -->
+          <div class="w-24 h-24 rounded-full bg-white text-sky-600 mx-auto flex items-center justify-center shadow-xl animate-scale-up border-4 border-sky-200">
+            <svg class="w-12 h-12 stroke-current animate-dash" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </div>
+          
+          <div class="space-y-2">
+            <h3 class="font-serif font-bold text-3xl tracking-tight text-white drop-shadow-xs">
+              Purchase Complete!
+            </h3>
+            <p class="text-xs text-sky-100 font-medium tracking-widest uppercase">
+              Thank you for choosing JK Publications
+            </p>
+          </div>
+
+          <p class="text-sm text-sky-50 leading-relaxed max-w-sm mx-auto font-light">
+            Your shipment has been registered as <span class="font-semibold">Cash on Delivery</span>. Details and tracking updates have been dispatched to your email.
+          </p>
+        </div>
+
+        <!-- Return controls -->
+        <div class="z-20 relative pt-4 border-t border-sky-500/30">
+          <button 
+            onclick="completePurchaseAndReset()"
+            class="w-full py-3.5 bg-white text-sky-700 hover:bg-sky-50 rounded-lg text-xs font-bold tracking-widest uppercase transition-all shadow-lg hover:shadow-xl"
+          >
+            Continue Exploring Bookstore
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Corporate Simple Footer -->
+  <footer class="bg-slate-900 text-slate-400 py-10 border-t-2 border-sky-400 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8 border-b border-slate-800 pb-8">
+        <div class="flex flex-col items-center md:items-start gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-full bg-white p-0.5 overflow-hidden flex items-center justify-center">
+              <img 
+                src="https://i.ibb.co/BVg64d1x/1000314843.png" 
+                alt="JK Publications Logo" 
+                class="w-full h-full object-contain rounded-full" 
+                onerror="handleLogoError(this)"
+              />
+            </div>
+            <div class="text-left">
+              <span class="font-serif font-bold text-white tracking-widest text-base">JK PUBLICATIONS</span>
+              <p class="text-[10px] tracking-widest text-sky-400 uppercase mt-0.5">Knowledge • Inspire • Impact</p>
+            </div>
+          </div>
+          
+          <!-- Branded Footer Contact Email -->
+          <a 
+            href="mailto:jkbookpublication@gmail.com" 
+            class="text-xs text-slate-400 hover:text-sky-400 font-mono mt-2 transition-colors duration-200"
+          >
+            jkbookpublication@gmail.com
+          </a>
+
+          <!-- Official Partnership Badge -->
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white rounded-full text-[11px] text-slate-700 shadow-sm mt-3 border border-sky-100">
+            <span class="font-medium tracking-wide">Official partnership with</span>
+            <span class="font-serif font-bold tracking-tight">
+              <span class="text-red-600 font-extrabold">V</span> <span class="text-black font-extrabold">prints</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-6 text-xs text-slate-400">
+          <span class="cursor-pointer hover:text-sky-400" onclick="switchTab('store')">Bookstore</span>
+          <span>•</span>
+          <span class="cursor-pointer hover:text-sky-400" onclick="switchTab('calculator')">Calculator</span>
+          <span>•</span>
+          <span class="cursor-pointer hover:text-sky-400" onclick="switchTab('account')">Account Control</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 text-[10px] tracking-wider text-slate-500 uppercase">
+        <span>© 2026 JK Publications. All Rights Reserved.</span>
+        <span>Minimalist Sky Blue & White Theme</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Main Storefront Scripts -->
+  <script>
+    // Database representing Dr. Jitendra Kumar Patel's publications with real-time rating models
+    const BOOKS_DATABASE = [
+      {
+        id: 1,
+        title: "Childhood, Youth, and Success",
+        author: "Dr. Jitendra Kumar Patel",
+        category: "Self-Improvement",
+        price: 499.00,
+        published: "31 March 2025",
+        isbn: "978-93-342-0625-8",
+        coverImage: "https://i.ibb.co/mVzK6mRk/17798897749246254577458373199515.jpg",
+        backCoverImage: "https://i.ibb.co/TMs88n1z/17798897696552860744823720844891.jpg",
+        description: "Childhood, Youth, and Success is a transformative guide that explores the critical stages of life—childhood and youth—and their essential role in shaping a successful future. Dr. Patel paints a portrait of the dreams, struggles, and triumphs that define these pivotal years, offering timeless wisdom for personal growth, resilience, and fulfillment.",
+        genre: "Self-help book",
+        coverStyle: "shadow-2xl hover:shadow-sky-200/50",
+        rating: 4.8,
+        reviewsList: [
+          { reviewer: "Satyendra Dev", rating: 5, text: "Extremely detailed. The author's journey from MP to Chhattisgarh is truly reflected in these encouraging pages." },
+          { reviewer: "Priyanka S.", rating: 4, text: "A great companion guide for modern youth searching for academic clarity and lifestyle balance." }
+        ]
+      },
+      {
+        id: 2,
+        title: "डिटॉक्स ऑफ़ फियर (Detox of Fear)",
+        subtitle: "डर से मुक्ति की ओर एक यात्रा",
+        author: "डॉ. जितेन्द्र कुमार पटेल (Dr. Jitendra Kumar Patel)",
+        category: "Self-Improvement",
+        price: 399.00,
+        published: "2025",
+        isbn: "978-93-342-0625-x",
+        coverImage: "https://i.ibb.co/yB0XP6bk/1779889779922291571462251170907.jpg",
+        backCoverImage: null,
+        description: "यह पुस्तक डर से मुक्ति की दिशा में एक प्रेरणादायक और आत्म-साक्षात्कार की यात्रा है। डॉ. जितेन्द्र कुमार पटेल द्वारा लिखित, 'डिटॉक्स ऑफ़ फियर' आपको अपने भीतर के भय, संकोच और नकारात्मक विचारों को दूर करके एक स्वतंत्र और ऊर्जावान जीवन जीने के व्यावहारिक मार्ग सुझाती है।",
+        genre: "Self-help book",
+        coverStyle: "shadow-2xl hover:shadow-red-200/50",
+        rating: 4.9,
+        reviewsList: [
+          { reviewer: "Ramesh Kumar", rating: 5, text: "डर और संकोच को मिटाने का एक अद्भुत व्यावहारिक दृष्टिकोण। हर हिंदी पाठक को इसे अवश्य पढ़ना चाहिए।" }
+        ]
+      }
+    ];
+
+    // State management variables
+    let activeSearchQuery = "";
+    let cart = [];
+    let wishlist = [];
+    let calcParams = {
+      copies: 500,
+      pages: 500,
+      coverType: 'paperback',
+      paperQuality: 'cream',
+      inkType: 'bw',
+      trimSize: '6x9',
+      deliverySpeed: 'standard'
+    };
+    let registeredUser = null;
+
+    // Synth Ambient BGM States (Plays automatically upon user gesture interaction)
+    let audioCtx = null;
+    let isBgmPlaying = false;
+    let bgmIntervalId = null;
+    let masterGain = null;
+
+    const chords = [
+      [130.81, 164.81, 196.00, 246.94], // C3, E3, G3, B3 (Cmaj7)
+      [174.61, 220.00, 261.63, 329.63], // F3, A3, C4, E4 (Fmaj7)
+      [196.00, 246.94, 293.66, 329.63], // G3, B3, D4, E4 (G6)
+      [220.00, 261.63, 329.63, 392.00]  // A3, C4, E4, G4 (Am7)
+    ];
+    let chordIdx = 0;
+    let noteIdx = 0;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        masterGain = audioCtx.createGain();
+        masterGain.gain.setValueAtTime(0.012, audioCtx.currentTime); // Soft background pad volume
+        masterGain.connect(audioCtx.destination);
+      }
+    }
+
+    function playSoftNote(freq, time, duration) {
+      if (!audioCtx || audioCtx.state === 'suspended') return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = 'sine'; // Pure acoustic tone wave
+      osc.frequency.setValueAtTime(freq, time);
+
+      gain.gain.setValueAtTime(0, time);
+      gain.gain.linearRampToValueAtTime(0.02, time + 0.8); // Slow warm attack
+      gain.gain.exponentialRampToValueAtTime(0.001, time + duration); // Long organic trail fade
+
+      osc.connect(gain);
+      gain.connect(masterGain);
+
+      osc.start(time);
+      osc.stop(time + duration);
+    }
+
+    function playBgmStep() {
+      if (!isBgmPlaying) return;
+      const now = audioCtx.currentTime;
+
+      const currentChord = chords[chordIdx];
+      const noteFreq = currentChord[noteIdx];
+
+      playSoftNote(noteFreq, now, 3.6);
+
+      noteIdx = (noteIdx + 1) % currentChord.length;
+      if (noteIdx === 0) {
+        chordIdx = (chordIdx + 1) % chords.length;
+      }
+    }
+
+    function unlockAudioOnInteraction() {
+      initAudio();
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      if (!isBgmPlaying) {
+        isBgmPlaying = true;
+        playBgmStep();
+        bgmIntervalId = setInterval(playBgmStep, 1100);
+      }
+      window.removeEventListener('click', unlockAudioOnInteraction);
+      window.removeEventListener('touchstart', unlockAudioOnInteraction);
+      window.removeEventListener('keydown', unlockAudioOnInteraction);
+    }
+
+    window.addEventListener('click', unlockAudioOnInteraction);
+    window.addEventListener('touchstart', unlockAudioOnInteraction);
+    window.addEventListener('keydown', unlockAudioOnInteraction);
+
+    function handleLogoError(imgElement) {
+      const parent = imgElement.parentElement;
+      if (parent) {
+        parent.innerHTML = `
+          <svg class="w-full h-full animate-pulse" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="250" cy="250" r="240" stroke="#0ea5e9" stroke-width="5" fill="none"/>
+            <text x="250" y="270" font-family="Georgia, serif" font-weight="bold" font-size="28" text-anchor="middle" fill="#0284c7" letter-spacing="4">JK</text>
+          </svg>
+        `;
+      }
+    }
+
+    // Custom beautiful notification dialog (replaces raw browser alert)
+    function showCustomNotification(title, text) {
+      document.getElementById('notificationTitle').innerText = title;
+      document.getElementById('notificationText').innerText = text;
+      document.getElementById('customNotificationModal').classList.remove('hidden');
+    }
+
+    function closeCustomNotification() {
+      document.getElementById('customNotificationModal').classList.add('hidden');
+    }
+
+    // Toggle storefront tab sections
+    function switchTab(targetTab) {
+      document.getElementById('section-store').classList.add('hidden');
+      document.getElementById('section-calculator').classList.add('hidden');
+      document.getElementById('section-account').classList.add('hidden');
+      
+      document.getElementById(`section-${targetTab}`).classList.remove('hidden');
+
+      const desktopTabs = ['store', 'calculator', 'account'];
+      desktopTabs.forEach(tab => {
+        const btn = document.getElementById(`tab-btn-${tab}`);
+        const mobBtn = document.getElementById(`mobile-tab-${tab}`);
+        if (tab === targetTab) {
+          btn.className = "flex items-center gap-2 px-4 py-2 text-xs tracking-wider font-semibold uppercase rounded-md transition-all bg-white text-sky-600 shadow-xs";
+          mobBtn.className = "flex flex-col items-center gap-1 text-[10px] font-bold uppercase text-sky-600";
+        } else {
+          btn.className = "flex items-center gap-2 px-4 py-2 text-xs tracking-wider font-semibold uppercase rounded-md transition-all text-slate-500 hover:text-sky-500";
+          mobBtn.className = "flex flex-col items-center gap-1 text-[10px] font-bold uppercase text-slate-400";
+        }
+      });
+    }
+
+    function renderStoreGrid() {
+      const targetGrid = document.getElementById('booksGrid');
+      targetGrid.innerHTML = '';
+
+      const filtered = BOOKS_DATABASE.filter(book => {
+        const matchesSearch = book.title.toLowerCase().includes(activeSearchQuery.toLowerCase()) || 
+                              book.author.toLowerCase().includes(activeSearchQuery.toLowerCase());
+        return matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        targetGrid.innerHTML = `
+          <div class="col-span-full text-center py-16 bg-white rounded-xl border border-sky-50">
+            <h4 class="font-serif font-semibold text-slate-800">No publications matched your parameters.</h4>
+            <button onclick="resetSearchFilters()" class="mt-3 text-xs text-sky-600 font-bold underline">Reset Search Options</button>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(book => {
+        const isWishlisted = wishlist.some(item => item.id === book.id);
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-2xl border border-sky-100 hover:border-sky-300 transition-all p-6 flex flex-col justify-between group cursor-pointer hover:shadow-lg";
+        card.setAttribute('onclick', `openQuickView(${book.id})`);
+        
+        // Dynamic rating stars generator
+        let starsHTML = '';
+        for (let i = 1; i <= 5; i++) {
+          starsHTML += `
+            <svg class="w-3.5 h-3.5 ${i <= Math.round(book.rating) ? 'text-amber-400' : 'text-slate-200'}" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+          `;
+        }
+
+        card.innerHTML = `
+          <div>
+            <div class="w-full h-96 rounded-xl overflow-hidden mb-5 bg-slate-50 flex items-center justify-center relative shadow-inner book-container">
+              <img 
+                src="${book.coverImage}" 
+                alt="${book.title} Front Cover" 
+                class="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105 ${book.coverStyle}"
+                onerror="this.src='https://placehold.co/400x600/e0f2fe/0369a1?text=Book+Cover'"
+              />
+              <div class="book-spine-shine"></div>
+              <span class="absolute top-3 right-3 bg-sky-500 text-white text-[9px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-full shadow-md">
+                ${book.category}
+              </span>
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center gap-1">
+                ${starsHTML}
+                <span class="text-[10px] text-slate-400 font-bold ml-1">(${book.rating.toFixed(1)})</span>
+              </div>
+              <span class="text-[9px] font-bold tracking-widest text-sky-500 uppercase">${book.genre} Edition</span>
+              <h4 class="font-serif font-bold text-lg text-slate-900 group-hover:text-sky-600 transition-colors">
+                ${book.title}
+              </h4>
+              <p class="text-xs text-slate-400">By ${book.author}</p>
+              <p class="text-xs text-slate-500 leading-relaxed mt-2 line-clamp-3">${book.description}</p>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-sky-50 flex items-center justify-between" onclick="event.stopPropagation()">
+            <div>
+              <span class="text-[10px] text-slate-400 block font-light">MSRP Price</span>
+              <span class="font-serif font-bold text-slate-900 text-lg">₹${book.price.toFixed(2)}</span>
+            </div>
+            <div class="flex gap-2">
+              <button 
+                onclick="toggleWishlistAction(${book.id})"
+                class="p-2.5 rounded-full border transition-all ${isWishlisted ? "bg-red-50 text-red-500 border-red-100" : "bg-white text-slate-400 border-sky-100"}"
+              >
+                <svg class="w-4 h-4" fill="${isWishlisted ? 'currentColor' : 'none'}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </button>
+              <button 
+                onclick="addToCartAction(${book.id})"
+                class="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-md text-xs uppercase font-bold tracking-wider transition-all shadow-xs"
+              >
+                Add To Basket
+              </button>
+            </div>
+          </div>
+        `;
+        targetGrid.appendChild(card);
+      });
+    }
+
+    function handleSearch(val) {
+      activeSearchQuery = val;
+      renderStoreGrid();
+    }
+
+    function resetSearchFilters() {
+      document.getElementById('searchInput').value = '';
+      activeSearchQuery = '';
+      renderStoreGrid();
+    }
+
+    function openQuickView(id) {
+      const book = BOOKS_DATABASE.find(b => b.id === id);
+      if (!book) return;
+
+      // Realistic front-and-back cover layouts
+      let coversHTML = `
+        <div class="flex flex-col items-center gap-2">
+          <span class="text-[9px] uppercase font-bold text-sky-600 tracking-widest bg-sky-100/50 px-2.5 py-0.5 rounded-full">Front Cover</span>
+          <div class="w-48 shadow-lg rounded-lg overflow-hidden border border-sky-100 bg-white book-container">
+            <img src="${book.coverImage}" class="w-full h-auto object-contain" onerror="this.src='https://placehold.co/400x600/e0f2fe/0369a1?text=Front+Cover'" />
+            <div class="book-spine-shine"></div>
+          </div>
+        </div>
+      `;
+
+      if (book.backCoverImage) {
+        coversHTML += `
+          <div class="flex flex-col items-center gap-2 mt-4 sm:mt-0">
+            <span class="text-[9px] uppercase font-bold text-sky-600 tracking-widest bg-sky-100/50 px-2.5 py-0.5 rounded-full">Back Flap</span>
+            <div class="w-48 shadow-lg rounded-lg overflow-hidden border border-sky-100 bg-white book-container">
+              <img src="${book.backCoverImage}" class="w-full h-auto object-contain" onerror="this.src='https://placehold.co/400x600/e0f2fe/0369a1?text=Back+Cover'" />
+              <div class="book-spine-shine"></div>
+            </div>
+          </div>
+        `;
+      }
+
+      document.getElementById('modalLeft').className = "md:w-1/2 bg-sky-50/50 p-6 flex flex-col sm:flex-row items-center justify-center border-r border-sky-100 gap-6";
+      document.getElementById('modalLeft').innerHTML = coversHTML;
+
+      // Map review list items
+      let reviewsHTML = '';
+      if (book.reviewsList && book.reviewsList.length > 0) {
+        book.reviewsList.forEach(rev => {
+          let revStars = '';
+          for (let i = 1; i <= 5; i++) {
+            revStars += `
+              <svg class="w-2.5 h-2.5 ${i <= rev.rating ? 'text-amber-400' : 'text-slate-200'}" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            `;
+          }
+          reviewsHTML += `
+            <div class="border-b border-sky-50 pb-2 mb-2">
+              <div class="flex justify-between items-center mb-0.5">
+                <span class="font-bold text-[10px] text-slate-800">${rev.reviewer}</span>
+                <div class="flex">${revStars}</div>
+              </div>
+              <p class="text-[10px] text-slate-500 leading-normal">${rev.text}</p>
+            </div>
+          `;
+        });
+      } else {
+        reviewsHTML = `<p class="text-[10px] text-slate-400 italic">No reviews yet. Be the first to share your review!</p>`;
+      }
+
+      document.getElementById('modalRight').innerHTML = `
+        <div class="space-y-4">
+          <div>
+            <span class="text-[10px] tracking-widest font-bold uppercase text-sky-500">${book.genre}</span>
+            <h3 class="font-serif font-bold text-2xl text-slate-950 mt-1 mb-0.5 leading-tight">${book.title}</h3>
+            <p class="text-xs text-slate-500 font-medium">Published by JK Publications ({31 March 2025})</p>
+          </div>
+          
+          <p class="text-xs text-slate-600 leading-relaxed max-h-36 overflow-y-auto pr-2 no-scrollbar">${book.description}</p>
+          
+          <div class="space-y-1 text-[10px] text-slate-400 font-mono border-t border-sky-50 pt-4">
+            <div>AUTHOR: ${book.author}</div>
+            <div>ISBN REFERENCE: ${book.isbn}</div>
+            <div>CATEGORY: ${book.category} Edition</div>
+          </div>
+
+          <!-- Rating & Review Section -->
+          <div class="border-t border-sky-100 pt-4 mt-2">
+            <h4 class="text-[11px] font-bold uppercase tracking-wider text-slate-800 mb-2">Reader Reviews</h4>
+            <div class="max-h-32 overflow-y-auto no-scrollbar pr-1 mb-3">
+              ${reviewsHTML}
+            </div>
+
+            <!-- Submit custom review -->
+            <div class="bg-sky-50/50 p-3 rounded-lg border border-sky-100/50">
+              <span class="text-[9px] font-bold uppercase text-sky-600 tracking-wider block mb-2">Write a Review</span>
+              <div class="grid grid-cols-2 gap-2 mb-2">
+                <input id="rev-name-input" type="text" placeholder="Your Name" class="text-[10px] p-1.5 border border-sky-100 rounded focus:outline-hidden focus:border-sky-400 bg-white" />
+                <select id="rev-rating-input" class="text-[10px] p-1.5 border border-sky-100 rounded focus:outline-hidden focus:border-sky-400 bg-white font-semibold">
+                  <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+                  <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+                  <option value="3">⭐⭐⭐ 3 Stars</option>
+                  <option value="2">⭐⭐ 2 Stars</option>
+                  <option value="1">⭐ 1 Star</option>
+                </select>
+              </div>
+              <textarea id="rev-text-input" placeholder="Share your experience with this publication..." rows="2" class="w-full text-[10px] p-2 border border-sky-100 rounded focus:outline-hidden focus:border-sky-400 bg-white mb-2"></textarea>
+              <button onclick="submitReview(${book.id})" class="px-3 py-1 bg-sky-500 hover:bg-sky-600 text-white rounded text-[9px] font-bold uppercase tracking-wider transition-all">Submit Review</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between border-t border-sky-50 pt-4 mt-6">
+          <div>
+            <span class="text-[10px] text-slate-400 block font-light">MSRP Price</span>
+            <span class="font-serif text-xl font-bold text-slate-950">₹${book.price.toFixed(2)}</span>
+          </div>
+          <button 
+            onclick="addToCartAction(${book.id}); closeBookModal();"
+            class="px-5 py-2.5 bg-sky-500 hover:bg-sky-600 text-white rounded-md text-xs font-bold tracking-wider uppercase transition-all shadow-xs"
+          >
+            Add To Basket
+          </button>
+        </div>
+      `;
+
+      document.getElementById('bookModal').classList.remove('hidden');
+    }
+
+    function closeBookModal() {
+      document.getElementById('bookModal').classList.add('hidden');
+    }
+
+    function submitReview(bookId) {
+      const name = document.getElementById('rev-name-input').value.trim();
+      const rating = parseInt(document.getElementById('rev-rating-input').value);
+      const text = document.getElementById('rev-text-input').value.trim();
+
+      if (!name || !text) {
+        showCustomNotification('Review System Warning', 'Please provide both your name and review comments.');
+        return;
+      }
+
+      const book = BOOKS_DATABASE.find(b => b.id === bookId);
+      if (book) {
+        book.reviewsList.unshift({ reviewer: name, rating: rating, text: text });
+        
+        // Update average rating
+        const totalRating = book.reviewsList.reduce((sum, r) => sum + r.rating, 0);
+        book.rating = totalRating / book.reviewsList.length;
+
+        renderStoreGrid();
+        openQuickView(bookId);
+      }
+    }
+
+    function toggleWishlist(open) {
+      const drawer = document.getElementById('wishlistDrawer');
+      const backdrop = document.getElementById('wishlistBackdrop');
+      const panel = document.getElementById('wishlistPanel');
+
+      if (open) {
+        renderWishlistItems();
+        drawer.classList.remove('pointer-events-none');
+        backdrop.classList.remove('pointer-events-none', 'opacity-0');
+        backdrop.classList.add('opacity-100');
+        panel.classList.remove('translate-x-full');
+        panel.classList.add('translate-x-0');
+      } else {
+        backdrop.classList.remove('opacity-100');
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+        panel.classList.remove('translate-x-0');
+        panel.classList.add('translate-x-full');
+        setTimeout(() => {
+          drawer.classList.add('pointer-events-none');
+        }, 500);
+      }
+    }
+
+    function toggleWishlistAction(id) {
+      const book = BOOKS_DATABASE.find(b => b.id === id);
+      if (!book) return;
+
+      const idx = wishlist.findIndex(item => item.id === id);
+      if (idx > -1) {
+        wishlist.splice(idx, 1);
+      } else {
+        wishlist.push(book);
+      }
+      updateWishlistInterface();
+      renderStoreGrid();
+    }
+
+    function updateWishlistInterface() {
+      const badge = document.getElementById('wishlistBadge');
+      const heart = document.getElementById('wishlistIcon');
+      
+      if (wishlist.length > 0) {
+        badge.classList.remove('hidden');
+        badge.innerText = wishlist.length;
+        heart.setAttribute('fill', 'currentColor');
+        heart.classList.add('text-sky-500');
+      } else {
+        badge.classList.add('hidden');
+        heart.setAttribute('fill', 'none');
+        heart.classList.remove('text-sky-500');
+      }
+    }
+
+    function renderWishlistItems() {
+      const scrollArea = document.getElementById('wishlistScrollArea');
+      scrollArea.innerHTML = '';
+
+      if (wishlist.length === 0) {
+        scrollArea.innerHTML = `
+          <div class="text-center py-16 flex flex-col items-center justify-center">
+            <h4 class="text-sm font-serif font-bold text-slate-800 tracking-wide">Your wishlist is empty</h4>
+            <p class="text-xs text-slate-400 mt-2 max-w-xs mx-auto text-center leading-relaxed">
+              Explore books and tap on the heart icon to save them to your custom catalog reading list.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      wishlist.forEach(item => {
+        const div = document.createElement('div');
+        div.className = "flex gap-4 pb-6 border-b border-sky-50 justify-between items-center";
+        div.innerHTML = `
+          <div class="flex gap-4 items-center">
+            <div class="w-12 shrink-0 shadow-sm rounded overflow-hidden relative book-container">
+              <img src="${item.coverImage}" class="w-full h-auto object-cover" />
+              <div class="book-spine-shine"></div>
+            </div>
+            <div>
+              <h4 class="text-xs font-serif font-semibold text-slate-900 leading-snug line-clamp-1">${item.title}</h4>
+              <p class="text-[10px] text-sky-600 mt-0.5">₹${item.price.toFixed(2)}</p>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button 
+              onclick="addToCartAction(${item.id}); toggleWishlist(false); toggleCart(true);" 
+              class="px-3 py-1 bg-sky-500 text-white rounded text-[10px] font-bold uppercase transition-all"
+            >
+              Move to Basket
+            </button>
+            <button 
+              onclick="toggleWishlistAction(${item.id}); renderWishlistItems();" 
+              class="text-red-500 hover:bg-red-50 p-1.5 rounded-full transition-all"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 13H5v-2h14v2z" />
+              </svg>
+            </button>
+          </div>
+        `;
+        scrollArea.appendChild(div);
+      });
+    }
+
+    function toggleCart(open) {
+      const drawer = document.getElementById('cartDrawer');
+      const backdrop = document.getElementById('cartBackdrop');
+      const panel = document.getElementById('cartPanel');
+
+      if (open) {
+        renderCartItems();
+        drawer.classList.remove('pointer-events-none');
+        backdrop.classList.remove('pointer-events-none', 'opacity-0');
+        backdrop.classList.add('opacity-100');
+        panel.classList.remove('translate-x-full');
+        panel.classList.add('translate-x-0');
+      } else {
+        backdrop.classList.remove('opacity-100');
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+        panel.classList.remove('translate-x-0');
+        panel.classList.add('translate-x-full');
+        setTimeout(() => {
+          drawer.classList.add('pointer-events-none');
+        }, 500);
+      }
+    }
+
+    function addToCartAction(id) {
+      const book = BOOKS_DATABASE.find(b => b.id === id);
+      if (!book) return;
+
+      const exist = cart.find(item => item.id === id);
+      if (exist) {
+        exist.quantity += 1;
+      } else {
+        cart.push({ ...book, quantity: 1 });
+      }
+
+      updateCartBadge();
+    }
+
+    function updateCartBadge() {
+      const badge = document.getElementById('cartBadge');
+      const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+      if (totalQty > 0) {
+        badge.classList.remove('hidden');
+        badge.innerText = totalQty;
+      } else {
+        badge.classList.add('hidden');
+      }
+    }
+
+    function modifyCartQty(id, change) {
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+
+      item.quantity += change;
+      if (item.quantity <= 0) {
+        cart = cart.filter(i => i.id !== id);
+      }
+      updateCartBadge();
+      renderCartItems();
+    }
+
+    function removeCartItem(id) {
+      cart = cart.filter(i => i.id !== id);
+      updateCartBadge();
+      renderCartItems();
+    }
+
+    function renderCartItems() {
+      const scrollArea = document.getElementById('cartScrollArea');
+      const footer = document.getElementById('cartFooter');
+      scrollArea.innerHTML = '';
+
+      if (cart.length === 0) {
+        scrollArea.innerHTML = `
+          <div class="text-center py-16 flex flex-col items-center justify-center">
+            <h4 class="text-sm font-serif font-bold text-slate-800 tracking-wide">Your basket is currently empty</h4>
+            <p class="text-xs text-slate-400 mt-2 max-w-xs mx-auto text-center leading-relaxed">
+              Explore Dr. Jitendra Kumar Patel's inspirational publications to add them to your collection.
+            </p>
+          </div>
+        `;
+        footer.classList.add('hidden');
+        return;
+      }
+
+      footer.classList.remove('hidden');
+      let total = 0;
+
+      cart.forEach(item => {
+        total += item.price * item.quantity;
+        const div = document.createElement('div');
+        div.className = "flex gap-4 pb-6 border-b border-sky-50";
+        div.innerHTML = `
+          <div class="w-16 shrink-0 shadow-sm rounded bg-slate-100 overflow-hidden relative book-container">
+            <img src="${item.coverImage}" class="w-full h-auto object-cover" onerror="this.src='https://placehold.co/200/e0f2fe/0369a1?text=Cover'" />
+            <div class="book-spine-shine"></div>
+          </div>
+          
+          <div class="flex-1 flex flex-col justify-between">
+            <div>
+              <h4 class="text-xs font-serif font-semibold text-slate-900 leading-snug line-clamp-2">${item.title}</h4>
+              <p class="text-[10px] text-slate-400 mt-0.5">${item.author}</p>
+            </div>
+            
+            <div class="flex items-center justify-between mt-2">
+              <div class="flex items-center bg-sky-50 rounded-md border border-sky-100 p-0.5">
+                <button onclick="modifyCartQty(${item.id}, -1)" class="w-6 h-6 flex items-center justify-center text-slate-500 hover:text-slate-800 text-xs font-bold">-</button>
+                <span class="w-6 text-center text-[11px] font-mono text-slate-800 font-semibold">${item.quantity}</span>
+                <button onclick="modifyCartQty(${item.id}, 1)" class="w-6 h-6 flex items-center justify-center text-slate-500 hover:text-slate-800 text-xs font-bold">+</button>
+              </div>
+              
+              <div class="text-right">
+                <span class="text-[11px] text-slate-400 block font-light">₹${item.price.toFixed(2)} ea</span>
+                <span class="text-xs font-bold text-slate-950">₹${(item.price * item.quantity).toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="removeCartItem(${item.id})" class="text-slate-300 hover:text-red-500 h-fit p-1">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        `;
+        scrollArea.appendChild(div);
+      });
+
+      document.getElementById('cartSubtotalVal').innerText = `₹${total.toFixed(2)}`;
+      document.getElementById('cartTotalVal').innerText = `₹${total.toFixed(2)}`;
+    }
+
+    function updateCalcSlider(field, val) {
+      calcParams[field] = parseInt(val);
+      if (field === 'copies') {
+        document.getElementById('copiesValDisplay').innerText = `${val} copies`;
+      } else {
+        document.getElementById('pagesValDisplay').innerText = `${val} pages`;
+      }
+      recalculateEstimates();
+    }
+
+    function updateCalcParam(field, val) {
+      calcParams[field] = val;
+
+      const buttonGroups = {
+        trimSize: 'calc-trim-group',
+        inkType: 'calc-ink-group',
+        coverType: 'calc-cover-group',
+        paperQuality: 'calc-paper-group',
+        deliverySpeed: 'calc-speed-group'
+      };
+
+      const groupContainer = document.getElementById(buttonGroups[field]);
+      if (groupContainer) {
+        const buttons = groupContainer.querySelectorAll('button');
+        buttons.forEach(btn => {
+          if (btn.id === `${field === 'trimSize' ? 'trim' : field === 'inkType' ? 'ink' : field === 'coverType' ? 'cover' : field === 'paperQuality' ? 'paper' : 'speed'}-${val}`) {
+            btn.className = `${btn.classList[0]} py-2.5 px-2 rounded-md border text-[11px] font-semibold text-center transition-all border-sky-500 bg-sky-50 text-sky-700`;
+          } else {
+            btn.className = `${btn.classList[0]} py-2.5 px-2 rounded-md border text-[11px] font-semibold text-center transition-all border-slate-100 bg-white hover:bg-slate-50`;
+          }
+        });
+      }
+      recalculateEstimates();
+    }
+
+    function recalculateEstimates() {
+      // CALIBRATED BASE ARITHMETIC:
+      // Base cover binder cost = ₹30.00
+      // Constant rate per page = ₹0.88
+      // Example (500 pages): ₹30.00 + (500 * ₹0.88) = ₹470.00 total print unit price
+      const baseConstantCoverPrice = 30.00;
+      const constantPageRate = 0.88;
+
+      // Cover binding quality coefficients
+      let coverFactor = 1.0;
+      if (calcParams.coverType === 'hardcover') coverFactor = 2.5; // Premium binding structures
+      if (calcParams.coverType === 'jacket') coverFactor = 3.2;
+
+      // Ink modifications
+      let inkModifier = 1.0;
+      if (calcParams.inkType === 'standard_color') inkModifier = 2.5;
+      if (calcParams.inkType === 'premium_color') inkModifier = 4.2;
+
+      // Paper types
+      let paperMultiplier = 1.0;
+      if (calcParams.paperQuality === 'white_matte') paperMultiplier = 1.15;
+      if (calcParams.paperQuality === 'glossy') paperMultiplier = 1.30;
+
+      // Trim size factor
+      let trimFactor = 1.0;
+      if (calcParams.trimSize === '5x8') trimFactor = 0.95;
+      if (calcParams.trimSize === 'A4') trimFactor = 1.35;
+
+      const dynamicCoverCost = baseConstantCoverPrice * coverFactor;
+      const dynamicPageCost = calcParams.pages * constantPageRate * inkModifier * paperMultiplier * trimFactor;
+      const printingUnitCost = dynamicCoverCost + dynamicPageCost;
+      
+      const baseTotal = printingUnitCost * calcParams.copies;
+      const shippingCost = calcParams.deliverySpeed === 'express' ? 500.00 : 0.00;
+      const finalEstimate = baseTotal + shippingCost;
+
+      const suggestedRetail = printingUnitCost * 1.6;
+      const royaltyPerBook = suggestedRetail - printingUnitCost;
+      const totalPotentialRoyalties = royaltyPerBook * calcParams.copies;
+
+      // Write results into ledger outputs
+      document.getElementById('ledgerCoverVal').innerText = `₹${dynamicCoverCost.toFixed(2)}`;
+      document.getElementById('ledgerPageVal').innerText = `₹${dynamicPageCost.toFixed(2)}`;
+      document.getElementById('ledgerUnitPriceVal').innerText = `₹${printingUnitCost.toFixed(2)}`;
+      document.getElementById('ledgerRetailPrice').innerText = `₹${suggestedRetail.toFixed(2)}`;
+      document.getElementById('ledgerRoyalty').innerText = `+₹${royaltyPerBook.toFixed(2)}`;
+      document.getElementById('ledgerQuantityVal').innerText = `x${calcParams.copies} copies`;
+      document.getElementById('ledgerShippingVal').innerText = `₹${shippingCost.toFixed(2)}`;
+      document.getElementById('ledgerGrandTotal').innerText = `₹${finalEstimate.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      document.getElementById('ledgerTotalRoyalty').innerText = `₹${totalPotentialRoyalties.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    function lockQuotation() {
+      const unitPriceVal = document.getElementById('ledgerUnitPriceVal').innerText;
+      showCustomNotification(
+        'Quotation Successfully Locked', 
+        `Your parameters are officially locked for ${calcParams.copies} copies at the calculated rate of ${unitPriceVal} per book.\n\nAn administrative representative from our regional publishing unit will get in contact with you shortly to verify manuscript material layout details.`
+      );
+    }
+
+    // ================= SECTION 3: ACCOUNT CONTROLS =================
+    function handleRegister(e) {
+      e.preventDefault();
+      const fullName = document.getElementById('reg-fullName').value;
+      const email = document.getElementById('reg-email').value;
+      const phone = document.getElementById('reg-phone').value;
+      const usernameInput = document.getElementById('reg-username').value;
+      const userType = document.getElementById('reg-userType').value;
+
+      registeredUser = {
+        fullName: fullName,
+        email: email,
+        phone: phone,
+        userType: userType,
+        username: usernameInput || fullName.toLowerCase().replace(/\s+/g, '')
+      };
+
+      document.getElementById('account-guest-view').classList.add('hidden');
+      document.getElementById('account-profile-view').classList.remove('hidden');
+
+      document.getElementById('profile-initial').innerText = fullName.charAt(0).toUpperCase();
+      document.getElementById('profile-name').innerText = fullName;
+      document.getElementById('profile-badge').innerText = `Active ${userType} Desk`;
+      document.getElementById('profile-username').innerText = `@${registeredUser.username}`;
+      document.getElementById('profile-email').innerText = email;
+    }
+
+    function handleLogout() {
+      registeredUser = null;
+      document.getElementById('registrationForm').reset();
+      document.getElementById('account-profile-view').classList.add('hidden');
+      document.getElementById('account-guest-view').classList.remove('hidden');
+    }
+
+    // ================= CHECOUT MULTI-STEP GATEWAY =================
+    function startCheckout() {
+      toggleCart(false);
+      
+      document.getElementById('shippingForm').classList.remove('hidden');
+      document.getElementById('paymentForm').classList.add('hidden');
+      document.getElementById('successOverlay').classList.add('hidden');
+      
+      document.getElementById('step1-label').className = "text-sky-600 font-bold";
+      document.getElementById('step2-label').className = "text-slate-400 font-bold";
+      document.getElementById('step3-label').className = "text-slate-400 font-bold";
+
+      document.getElementById('checkoutHeader').classList.remove('hidden');
+      document.getElementById('checkoutProgress').classList.remove('hidden');
+
+      document.getElementById('checkoutModal').classList.remove('hidden');
+    }
+
+    function closeCheckout() {
+      document.getElementById('checkoutModal').classList.add('hidden');
+    }
+
+    function submitShipping(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('ship-name').value;
+      const address = document.getElementById('ship-address').value;
+      const city = document.getElementById('ship-city').value;
+
+      document.getElementById('summary-name').innerText = name;
+      document.getElementById('summary-address').innerText = `${address}, ${city}`;
+
+      document.getElementById('shippingForm').classList.add('hidden');
+      document.getElementById('paymentForm').classList.remove('hidden');
+
+      document.getElementById('step2-label').className = "text-sky-600 font-bold";
+    }
+
+    function checkoutStepBack(step) {
+      if (step === 1) {
+        document.getElementById('paymentForm').classList.add('hidden');
+        document.getElementById('shippingForm').classList.remove('hidden');
+        document.getElementById('step2-label').className = "text-slate-400 font-bold";
+      }
+    }
+
+    function submitPayment(e) {
+      e.preventDefault();
+
+      document.getElementById('checkoutHeader').classList.add('hidden');
+      document.getElementById('checkoutProgress').classList.add('hidden');
+      document.getElementById('paymentForm').classList.add('hidden');
+      document.getElementById('successOverlay').classList.remove('hidden');
+
+      startConfettiRain();
+      playPaymentSuccessSound();
+      speakThankYouLine();
+    }
+
+    function completePurchaseAndReset() {
+      cart = [];
+      updateCartBadge();
+      closeCheckout();
+      switchTab('store');
+    }
+
+    // Party success chime generator (Web Audio API)
+    function playPaymentSuccessSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(523.25, ctx.currentTime);
+        gain1.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(659.25, ctx.currentTime + 0.15);
+        gain2.gain.setValueAtTime(0.15, ctx.currentTime + 0.15);
+        gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.85);
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+
+        osc1.start();
+        osc1.stop(ctx.currentTime + 0.6);
+        osc2.start(ctx.currentTime + 0.15);
+        osc2.stop(ctx.currentTime + 0.85);
+      } catch (e) {
+        console.log("Audio pipeline blocked or unsupported.");
+      }
+    }
+
+    // Speech voice synthesizer engine (Web Speech API)
+    function speakThankYouLine() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const phrase = new SpeechSynthesisUtterance("Thank you for buying from JK Book Publication");
+        
+        const voices = window.speechSynthesis.getVoices();
+        const femaleVoice = voices.find(v => 
+          v.name.toLowerCase().includes('female') || 
+          v.name.toLowerCase().includes('google us english') || 
+          v.name.toLowerCase().includes('zira') || 
+          v.name.toLowerCase().includes('samantha') ||
+          v.name.toLowerCase().includes('karen')
+        );
+        
+        if (femaleVoice) {
+          phrase.voice = femaleVoice;
+        }
+        phrase.pitch = 1.15;
+        phrase.rate = 0.9;
+        window.speechSynthesis.speak(phrase);
+      }
+    }
+
+    let confettiInterval;
+    function startConfettiRain() {
+      const canvas = document.getElementById('confettiCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      
+      const resizeCanvas = () => {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+      };
+      resizeCanvas();
+
+      const colors = ['#ffffff', '#bae6fd', '#7dd3fc', '#38bdf8', '#0ea5e9', '#0284c7'];
+      const particles = [];
+      const particleCount = 80;
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * 6 + 4,
+          d: Math.random() * particleCount,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          tilt: Math.random() * 10 - 5,
+          tiltAngleIncremental: Math.random() * 0.07 + 0.02,
+          tiltAngle: 0,
+          speed: Math.random() * 3 + 2
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach((p, index) => {
+          p.tiltAngle += p.tiltAngleIncremental;
+          p.y += p.speed;
+          p.x += Math.sin(p.tiltAngle) * 0.5;
+          p.tilt = Math.sin(p.tiltAngle - index / 3) * 15;
+
+          if (p.y > canvas.height) {
+            p.x = Math.random() * canvas.width;
+            p.y = -20;
+            p.tilt = Math.random() * 10 - 5;
+          }
+
+          ctx.beginPath();
+          ctx.lineWidth = p.r;
+          ctx.strokeStyle = p.color;
+          ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+          ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+          ctx.stroke();
+        });
+
+        confettiInterval = requestAnimationFrame(draw);
+      }
+
+      draw();
+    }
+
+    // Bootstrap app on complete loading sequence
+    window.addEventListener('DOMContentLoaded', () => {
+      renderStoreGrid();
+      recalculateEstimates();
+    });
+  </script>
+</body>
+</html>
