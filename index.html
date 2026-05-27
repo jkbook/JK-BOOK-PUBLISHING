@@ -1580,6 +1580,26 @@
         reviewsList: [
           { reviewer: "Ramesh Kumar", rating: 5, text: "डर और संकोच को मिटाने का एक अद्भुत व्यावहारिक दृष्टिकोण। हर हिंदी पाठक को इसे अवश्य पढ़ना चाहिए।" }
         ]
+      },
+      {
+        id: 3,
+        title: "तुम कहाँ से हो? (Tum Kahan Se Ho?)",
+        subtitle: "एक प्रेरणादायक और आत्म-अन्वेषण यात्रा",
+        author: "डॉ. जितेन्द्र कुमार पटेल (Dr. Jitendra Kumar Patel)",
+        category: "Coming Soon",
+        price: 0.00,
+        isComingSoon: true,
+        published: "शीघ्र उपलब्ध (Coming Soon)",
+        isbn: "978-93-342-0625-y (Coming Soon)",
+        coverImage: "https://i.ibb.co/vCmNLScV/Screenshot-2026-0527-230302.jpg",
+        backCoverImage: "https://i.ibb.co/LhD3XphG/Screenshot-2026-0527-230321.jpg",
+        description: "डॉ. जितेन्द्र कुमार पटेल की यह बहुप्रतीक्षित नई हिंदी कृति 'तुम कहाँ से हो?' पाठकों को आत्म-अन्वेषण, जड़ों की तलाश और अस्तित्व के वास्तविक अर्थ को समझने के एक गहरे सफर पर ले जाती है। यह पुस्तक जीवन के मूल सिद्धांतों, संस्कारों और आत्म-जागरूकता पर गहन चिंतन प्रस्तुत करती है ताकि प्रत्येक युवा जीवन की सही राह पर अग्रसर हो सके।",
+        genre: "Self-help book",
+        coverStyle: "shadow-2xl hover:shadow-emerald-200/50",
+        rating: 5.0,
+        reviewsList: [
+          { reviewer: "Editorial Preview", rating: 5, text: "डॉ. पटेल की यह आगामी पुस्तक पाठकों के अंतर्मन को झंकृत करेगी और उन्हें आत्म-जागरूकता की एक सुंदर यात्रा पर ले जाएगी।" }
+        ]
       }
     ];
 
@@ -1591,6 +1611,7 @@
       pages: 500,
       coverType: 'paperback',
       paperQuality: 'cream',
+      initType: 'bw',
       inkType: 'bw',
       trimSize: '6x9',
       deliverySpeed: 'standard'
@@ -1719,7 +1740,7 @@
 
       noiseNode.connect(filter);
       filter.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
+      gainNode.connect(masterGain);
 
       // Generate randomized individual clap popping impulses
       const totalClaps = 30;
@@ -1736,7 +1757,7 @@
         popGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + delay + 0.09);
         
         popOsc.connect(popGain);
-        popGain.connect(audioCtx.destination);
+        popGain.connect(masterGain);
         
         popOsc.start(audioCtx.currentTime + delay);
         popOsc.stop(audioCtx.currentTime + delay + 0.12);
@@ -1831,6 +1852,18 @@
           `;
         }
 
+        const priceDisplay = book.isComingSoon 
+          ? `<span class="font-serif font-bold text-sky-600 text-sm tracking-wide bg-sky-50 px-2 py-1 rounded">शीघ्र उपलब्ध</span>` 
+          : `<span class="font-serif font-bold text-slate-900 text-lg">₹${book.price.toFixed(2)}</span>`;
+
+        const actionButton = book.isComingSoon 
+          ? `<button class="px-4 py-2 bg-slate-100 border border-slate-200 text-slate-400 rounded-md text-xs uppercase font-bold tracking-wider cursor-not-allowed" disabled>शीघ्र आ रहा है</button>`
+          : `<button onclick="addToCartAction(${book.id})" class="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-md text-xs uppercase font-bold tracking-wider transition-all shadow-xs">Add To Basket</button>`;
+
+        const comingSoonBadge = book.isComingSoon 
+          ? `<span class="absolute top-3 left-3 bg-emerald-500 text-white text-[9px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-full shadow-md animate-pulse">Coming Soon</span>` 
+          : ``;
+
         card.innerHTML = `
           <div>
             <div class="w-full h-96 rounded-xl overflow-hidden mb-5 bg-slate-50 flex items-center justify-center relative shadow-inner book-container">
@@ -1841,6 +1874,7 @@
                 onerror="this.src='https://placehold.co/400x600/e0f2fe/0369a1?text=Book+Cover'"
               />
               <div class="book-spine-shine"></div>
+              ${comingSoonBadge}
               <span class="absolute top-3 right-3 bg-sky-500 text-white text-[9px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-full shadow-md">
                 ${book.category}
               </span>
@@ -1860,8 +1894,8 @@
           </div>
           <div class="mt-6 pt-4 border-t border-sky-50 flex items-center justify-between" onclick="event.stopPropagation()">
             <div>
-              <span class="text-[10px] text-slate-400 block font-light">MSRP Price</span>
-              <span class="font-serif font-bold text-slate-900 text-lg">₹${book.price.toFixed(2)}</span>
+              <span class="text-[10px] text-slate-400 block font-light">${book.isComingSoon ? "Status" : "MSRP Price"}</span>
+              ${priceDisplay}
             </div>
             <div class="flex gap-2">
               <button 
@@ -1872,12 +1906,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
               </button>
-              <button 
-                onclick="addToCartAction(${book.id})"
-                class="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-md text-xs uppercase font-bold tracking-wider transition-all shadow-xs"
-              >
-                Add To Basket
-              </button>
+              ${actionButton}
             </div>
           </div>
         `;
@@ -1900,7 +1929,7 @@
       const book = BOOKS_DATABASE.find(b => b.id === id);
       if (!book) return;
 
-      // Front-and-back covers
+      // Front-and-back covers side-by-side
       let coversHTML = `
         <div class="flex flex-col items-center gap-2">
           <span class="text-[9px] uppercase font-bold text-sky-600 tracking-widest bg-sky-100/50 px-2.5 py-0.5 rounded-full">Front Cover</span>
@@ -1914,7 +1943,7 @@
       if (book.backCoverImage) {
         coversHTML += `
           <div class="flex flex-col items-center gap-2 mt-4 sm:mt-0">
-            <span class="text-[9px] uppercase font-bold text-sky-600 tracking-widest bg-sky-100/50 px-2.5 py-0.5 rounded-full">Back Flap</span>
+            <span class="text-[9px] uppercase font-bold text-sky-600 tracking-widest bg-sky-100/50 px-2.5 py-0.5 rounded-full">Back Cover / Flap</span>
             <div class="w-48 shadow-lg rounded-lg overflow-hidden border border-sky-100 bg-white book-container">
               <img src="${book.backCoverImage}" class="w-full h-auto object-contain" onerror="this.src='https://placehold.co/400x600/e0f2fe/0369a1?text=Back+Cover'" />
               <div class="book-spine-shine"></div>
@@ -1951,6 +1980,14 @@
       } else {
         reviewsHTML = `<p class="text-[10px] text-slate-400 italic">No reviews yet. Be the first to share your review!</p>`;
       }
+
+      const priceVal = book.isComingSoon 
+        ? `<span class="font-serif text-lg font-bold text-sky-600 bg-sky-50 px-2 py-1 rounded">शीघ्र उपलब्ध (TBA)</span>` 
+        : `<span class="font-serif text-xl font-bold text-slate-950">₹${book.price.toFixed(2)}</span>`;
+
+      const modalButton = book.isComingSoon 
+        ? `<button class="px-5 py-2.5 bg-slate-100 text-slate-400 border border-slate-200 rounded-md text-xs font-bold tracking-wider uppercase cursor-not-allowed" disabled>शीघ्र आ रहा है (Coming Soon)</button>`
+        : `<button onclick="addToCartAction(${book.id}); closeBookModal();" class="px-5 py-2.5 bg-sky-500 hover:bg-sky-600 text-white rounded-md text-xs font-bold tracking-wider uppercase transition-all shadow-xs">Add To Basket</button>`;
 
       document.getElementById('modalRight').innerHTML = `
         <div class="space-y-4">
@@ -1996,15 +2033,10 @@
 
         <div class="flex items-center justify-between border-t border-sky-50 pt-4 mt-6">
           <div>
-            <span class="text-[10px] text-slate-400 block font-light">MSRP Price</span>
-            <span class="font-serif text-xl font-bold text-slate-950">₹${book.price.toFixed(2)}</span>
+            <span class="text-[10px] text-slate-400 block font-light">${book.isComingSoon ? "Status" : "MSRP Price"}</span>
+            ${priceVal}
           </div>
-          <button 
-            onclick="addToCartAction(${book.id}); closeBookModal();"
-            class="px-5 py-2.5 bg-sky-500 hover:bg-sky-600 text-white rounded-md text-xs font-bold tracking-wider uppercase transition-all shadow-xs"
-          >
-            Add To Basket
-          </button>
+          ${modalButton}
         </div>
       `;
 
@@ -2110,6 +2142,11 @@
       wishlist.forEach(item => {
         const div = document.createElement('div');
         div.className = "flex gap-4 pb-6 border-b border-sky-50 justify-between items-center";
+        
+        const wishlistButton = item.isComingSoon 
+          ? `<span class="text-[10px] text-slate-400 font-bold tracking-wider uppercase bg-slate-50 border border-slate-100 px-3 py-1 rounded">Coming Soon</span>`
+          : `<button onclick="addToCartAction(${item.id}); toggleWishlist(false); toggleCart(true);" class="px-3 py-1 bg-sky-500 text-white rounded text-[10px] font-bold uppercase transition-all">Move to Basket</button>`;
+
         div.innerHTML = `
           <div class="flex gap-4 items-center">
             <div class="w-12 shrink-0 shadow-sm rounded overflow-hidden relative book-container">
@@ -2118,16 +2155,11 @@
             </div>
             <div>
               <h4 class="text-xs font-serif font-semibold text-slate-900 leading-snug line-clamp-1">${item.title}</h4>
-              <p class="text-[10px] text-sky-600 mt-0.5">₹${item.price.toFixed(2)}</p>
+              <p class="text-[10px] text-sky-600 mt-0.5">${item.isComingSoon ? "शीघ्र उपलब्ध" : "₹" + item.price.toFixed(2)}</p>
             </div>
           </div>
-          <div class="flex gap-2">
-            <button 
-              onclick="addToCartAction(${item.id}); toggleWishlist(false); toggleCart(true);" 
-              class="px-3 py-1 bg-sky-500 text-white rounded text-[10px] font-bold uppercase transition-all"
-            >
-              Move to Basket
-            </button>
+          <div class="flex gap-2 items-center">
+            ${wishlistButton}
             <button 
               onclick="toggleWishlistAction(${item.id}); renderWishlistItems();" 
               class="text-red-500 hover:bg-red-50 p-1.5 rounded-full transition-all"
@@ -2168,6 +2200,7 @@
     function addToCartAction(id) {
       const book = BOOKS_DATABASE.find(b => b.id === id);
       if (!book) return;
+      if (book.isComingSoon) return; // Guard logic for coming soon books
 
       const exist = cart.find(item => item.id === id);
       if (exist) {
